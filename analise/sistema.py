@@ -1,5 +1,6 @@
 from entidades import Plataforma, Usuario, Interacao, Video, Podcast, Artigo
     # importa todos os módulos criados anteriormente
+from estruturas_dados.fila import Fila
 
 import csv # importa o módulo necessário pra carregar os dados csv
 
@@ -10,6 +11,7 @@ class SistemaAnaliseEngajamento:
         self.__conteudos_registrados = {} # inicia o dicionário vazio
         self.__usuarios_registrados = {} # inicia o dicionário vazio
         self.__proximo_id_plataforma = 1 # inicializa como 1 pois será o primeiro ID registrado de plataforma
+        self.__fila_interacoes_brutas = Fila()
 
     def cadastrar_plataforma(self, nome_plataforma: str) -> Plataforma:
         # método para criar objetos do tipo plataforma e adicioná-los ao dicionário de plataformas_registradas
@@ -36,10 +38,11 @@ class SistemaAnaliseEngajamento:
     def _carregar_interacoes_csv(self, caminho_arquivo: str) -> list:
         # método privado que retorna uma lista de dicionários, em que cada um representa uma linha do CSV,
         # com as chaves sendo os nomes das colunas
-        with open(caminho_arquivo, newline='', encoding='utf-8') as csvfile: # abre o arquivo csv
-            leitor = csv.DictReader(csvfile) # transforma em dicionários o que foi lido do csv
-            return list(leitor) # retorna a lista de dicionários
-
+        with open(caminho_arquivo, newline='', encoding='utf-8') as csvfile:
+            leitor = csv.DictReader(csvfile)
+            for linha in leitor:
+                self.__fila_interacoes_brutas.enfileirar(linha)
+                
     def processar_interacoes_do_csv(self, caminho_arquivo):
         registros = self._carregar_interacoes_csv(caminho_arquivo)
             # guarda em registros a lista de dicionários com os dados
