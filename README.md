@@ -7,7 +7,6 @@ Este projeto foi desenvolvido como parte da Fase 3 do bootcamp Ada+Globotech, co
 ## Equipe 5✨
 
 -  Bernardo Soutelo
--  Felipe Sales
 -  Iane Gomes
 -  Ren Wrobleski
 
@@ -46,6 +45,26 @@ Fase3/
 └── analise/
     └── sistema.py               # SistemaAnaliseEngajamento
 ```
+## 🧠 Divisão de tarefas & Funcionalidades implementadas
+
+### ✅ Ren Wrobleski – Estruturas Fundamentais
+- Classe `Fila` com `enfileirar`, `desenfileirar`, `esta_vazia`;
+- Classe `ArvoreBinariaBusca` para busca e armazenamento de conteúdos e usuários.
+
+### ✅ Bernardo Soutelo – Integração e Refatoração
+- Adaptação da classe `SistemaAnaliseEngajamento` para usar as novas estruturas;
+- Implementação do fluxo `carregar_interacoes_csv` e `processar_interacoes_da_fila`;
+- Ajuste das entidades (`Usuario`, `Conteudo`, `Interacao`) para funcionamento integrado.
+
+### ✅ Iane Gomes – Ordenação e Relatórios
+- Implementação do algoritmo:
+  - `quick_sort`
+- Relatórios de conteúdo ordenados por:
+  - Tempo total de consumo;
+  - Média de tempo;
+  - Comentários.
+  
+  #### ✅ Todos Integrantes trabalharam na revisão geral, refatoração, documentação e testes unitarios
 
 ## 🚀 Como Executar
 
