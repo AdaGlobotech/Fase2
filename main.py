@@ -20,7 +20,7 @@ def main():
     sistema.processar_interacoes_da_fila()
 
     # 4. Gerar e apresentar todos os relatórios consolidados
-    sistema.gerar_todos_os_relatorios(top_n=5)
+    sistema.gerar_todos_os_relatorios(top_n=10)
 
 if __name__ == "__main__":
     main()

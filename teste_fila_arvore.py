@@ -3,6 +3,13 @@ from estruturas_dados.arvore_binaria_busca import ArvoreBinariaBusca
 from algoritmos.ordenacao import quick_sort
 
 def demonstrar_fila():
+    """
+    Demonstra o funcionamento da estrutura de Fila (FIFO).
+    Itens são adicionados e depois removidos na mesma ordem em que entraram.
+    
+    - Complexidade de Tempo: O(n), onde n é o número de itens enfileirados. A complexidade é dominada pelo loop que processa cada item.
+    - Complexidade de Espaço: O(n), para armazenar os n itens na estrutura da fila.
+    """
     print("--- Demonstração da Fila (FIFO) ---")
     fila_de_tarefas = Fila()
 
@@ -22,6 +29,15 @@ def demonstrar_fila():
 
 
 def demonstrar_arvore():
+    """
+    Demonstra as operações da Árvore de Busca Binária (BST).
+    Itens são inseridos e depois buscados por sua chave.
+    O percurso em ordem exibe os itens já ordenados.
+
+    - Complexidade de Tempo: O(n log n) para construir a árvore com n itens. A busca individual é O(log n) e o percurso completo é O(n).
+    - Complexidade de Espaço: O(n), para armazenar os n nós da árvore.
+    """
+
     print("--- Demonstração da Árvore de Busca Binária (BST) ---")
     arvore_usuarios = ArvoreBinariaBusca()
 
@@ -47,8 +63,13 @@ def demonstrar_arvore():
 
 def demonstrar_quicksort():
     """
-    Função para demonstrar o uso do algoritmo quick_sort com diferentes chaves e ordens.
+    Demonstra o uso do algoritmo quick_sort para ordenar uma lista de objetos complexos (dicionários) 
+    com base em diferentes chaves e em ordens distintas.
+
+    - Complexidade de Tempo: O(n log n), dominada pela execução do algoritmo de ordenação para uma lista de n itens.
+    - Complexidade de Espaço: O(n), para armazenar a lista original e as listas resultantes da ordenação.
     """
+     
     print("--- Demonstração do Algoritmo Quick Sort ---")
     
     # Exemplo de dados: uma lista de dicionários representando produtos

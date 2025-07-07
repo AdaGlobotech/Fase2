@@ -15,7 +15,13 @@ from entidades.Usuario import Usuario
 from entidades.Interacao import Interacao
 
 class SistemaAnaliseEngajamento:
+    """
+    Orquestrador principal que utiliza uma Fila para processamento de dados
+    e Árvores de Busca Binária para armazenamento e gerenciamento eficiente
+    de conteúdos e usuários.
+    """
     def __init__(self):
+        # Inicializa a fila para interações brutas
         self.fila_interacoes_brutas = Fila()
         self._arvore_conteudos = ArvoreBinariaBusca()
         self._arvore_usuarios = ArvoreBinariaBusca()
@@ -23,6 +29,9 @@ class SistemaAnaliseEngajamento:
         self._proximo_id_plataforma = 1
 
     def carregar_interacoes_csv(self, caminho_arquivo: str):
+        #Abre um arquivo CSV, 
+        # lê cada linha e a enfileira na Fila de interações brutas para processamento posterior.
+
         # Complexidade de Tempo: O(M), onde M é o número de linhas no CSV.
         try:
             with open(caminho_arquivo, mode='r', encoding='utf-8') as f:
@@ -34,8 +43,13 @@ class SistemaAnaliseEngajamento:
             print(f"Erro: Arquivo não encontrado em '{caminho_arquivo}'.")
 
     def processar_interacoes_da_fila(self):
+        #Consome a fila de interações brutas, processando um item por vez.
+        # Para cada item, busca ou cria os objetos (Usuario, Conteudo) nas árvores,
+        # instancia uma Interacao e associa os objetos.
+
          # Complexidade de Tempo: O(M * (log N + log U)), onde M é o número de interações,
          # N é o número de conteúdos únicos e U é o número de usuários únicos (assumindo árvores balanceadas).
+         
         print("Iniciando processamento das interações da fila...")
         contador_erros = 0
         while not self.fila_interacoes_brutas.esta_vazia():
@@ -86,9 +100,15 @@ class SistemaAnaliseEngajamento:
             print("Processamento da fila concluído com sucesso.")
 
     def obter_plataforma(self, nome_plataforma: str) -> Plataforma:
+        #Busca uma plataforma pelo nome no dicionário.
+        #Se não a encontra, chama o método de cadastro para criá-la e depois a retorna.
+
         return self._plataformas_registradas.get(nome_plataforma) or self.cadastrar_plataforma(nome_plataforma)
 
     def cadastrar_plataforma(self, nome_plataforma: str) -> Plataforma:
+        #Cria um novo objeto Plataforma com um ID único
+        # e o armazena no dicionário de plataformas registradas.
+
         if nome_plataforma not in self._plataformas_registradas:
             nova_plataforma = Plataforma(nome_plataforma, self._proximo_id_plataforma)
             self._plataformas_registradas[nome_plataforma] = nova_plataforma
@@ -96,6 +116,10 @@ class SistemaAnaliseEngajamento:
         return self._plataformas_registradas[nome_plataforma]
 
     def _gerar_relatorio_ordenado(self, titulo: str, lista_objetos: list, metrica_chave, top_n: int):
+        #Método auxiliar privado para gerar qualquer relatório ordenado.
+        # Recebe uma lista de objetos, uma 'chave' (lambda) para a métrica de ordenação,
+        # ordena com quick_sort e exibe os N primeiros.
+
         # Complexidade de Tempo: Dominada pelo quick_sort, O(N log N) onde N é len(lista_objetos).
         print(titulo)
         if not lista_objetos:
@@ -120,6 +144,9 @@ class SistemaAnaliseEngajamento:
             print(f"{i+1}. {nome_obj} | Métrica: {valor_metrica}")
 
     def gerar_todos_os_relatorios(self, top_n=5):
+        #Orquestra a geração de todos os relatórios finais.
+        #Para cada tipo de análise, define a métrica e chama o método auxiliar 
+        # '_gerar_relatorio_ordenado' para exibir os resultados.
         print("\n" + "="*50)
         print("RELATÓRIOS DE ENGAJAMENTO DE MÍDIAS GLOBO - FASE 3")
         print("="*50)
