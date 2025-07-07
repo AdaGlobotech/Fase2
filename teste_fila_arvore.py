@@ -1,5 +1,6 @@
 from estruturas_dados.fila import Fila
 from estruturas_dados.arvore_binaria_busca import ArvoreBinariaBusca
+from algoritmos.ordenacao import quick_sort
 
 def demonstrar_fila():
     print("--- Demonstração da Fila (FIFO) ---")
@@ -44,7 +45,42 @@ def demonstrar_arvore():
     for usuario in lista_ordenada:
         print(f"  -> {usuario}")
 
+def demonstrar_quicksort():
+    """
+    Função para demonstrar o uso do algoritmo quick_sort com diferentes chaves e ordens.
+    """
+    print("--- Demonstração do Algoritmo Quick Sort ---")
+    
+    # Exemplo de dados: uma lista de dicionários representando produtos
+    produtos = [
+        {'nome': 'Celular', 'preco': 2500, 'avaliacao': 4.5},
+        {'nome': 'Notebook', 'preco': 4500, 'avaliacao': 4.8},
+        {'nome': 'Fone de Ouvido', 'preco': 350, 'avaliacao': 4.2},
+        {'nome': 'Teclado', 'preco': 150, 'avaliacao': 4.9},
+        {'nome': 'Mouse', 'preco': 90, 'avaliacao': 4.7},
+    ]
+
+    print("Lista original de produtos:")
+    for p in produtos:
+        print(f"  -> {p}")
+
+    # 1. Ordenando por preço, em ordem crescente (padrão)
+    print("\n1. Ordenando por 'preco' (crescente):")
+    produtos_por_preco = quick_sort(produtos, chave=lambda item: item['preco'])
+    for p in produtos_por_preco:
+        print(f"  -> {p}")
+
+    # 2. Ordenando por avaliação, em ordem decrescente
+    print("\n2. Ordenando por 'avaliacao' (decrescente):")
+    produtos_por_avaliacao = quick_sort(produtos, chave=lambda item: item['avaliacao'], decrescente=True)
+    for p in produtos_por_avaliacao:
+        print(f"  -> {p}")
+    print("")
+
+
 if __name__ == "__main__":
     demonstrar_fila()
     print("="*50)
     demonstrar_arvore()
+    print("="*50)
+    demonstrar_quicksort()

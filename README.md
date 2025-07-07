@@ -64,6 +64,9 @@ fase3/
 
 O projeto inclui **testes manuais** para validar:
 
+- Funcionamento da (`Fila`);
+- Funcionamento da (`Arvore Binaria`);
+- Funcionamento do (`QuickSort`);
 - Registro e contagem de interações (`Usuario`);
 - Cálculo de tempo total e média de consumo (`Conteudo`);
 - Comentários por conteúdo (`Interacao`);
