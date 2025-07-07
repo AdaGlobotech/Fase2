@@ -2,6 +2,25 @@ from entidades import Plataforma, Usuario, Interacao, Video, Podcast, Artigo
 from estruturas_dados import Fila, ArvoreBinariaBusca
 import csv
 
+def _quick_sort(lista, key=lambda x: x):
+    if len(lista) <= 1:
+        return lista[:]
+    pivo = key(lista[0])
+    menores = [x for x in lista[1:] if key(x) <= pivo]
+    maiores = [x for x in lista[1:] if key(x) > pivo]
+    return _quick_sort(menores, key) + [lista[0]] + _quick_sort(maiores, key)
+
+def _insertion_sort(lista, key=lambda x: x):
+    resultado = lista[:]
+    for i in range(1, len(resultado)):
+        atual = resultado[i]
+        j = i - 1
+        while j >= 0 and key(resultado[j]) > key(atual):
+            resultado[j + 1] = resultado[j]
+            j -= 1
+        resultado[j + 1] = atual
+    return resultado
+
 class SistemaAnaliseEngajamento:
     def __init__(self):
         self.__plataformas_registradas = {}
@@ -77,7 +96,7 @@ class SistemaAnaliseEngajamento:
 
     def gerar_relatorio_engajamento_conteudos(self, top_n: int | None = None) -> None:
         conteudos = self.__arvore_conteudos.percurso_em_ordem()
-        conteudos.sort(key=lambda c: c.calcular_tempo_total_consumo(), reverse=True)
+        conteudos = _quick_sort(conteudos, key=lambda c: c.calcular_tempo_total_consumo())[::-1]
         for conteudo in conteudos[:top_n]:
             tempo_total = conteudo.calcular_tempo_total_consumo()
             media_tempo = conteudo.calcular_media_tempo_consumo()
@@ -89,10 +108,10 @@ class SistemaAnaliseEngajamento:
 
     def gerar_relatorio_atividade_usuarios(self, top_n: int | None = None) -> None:
         usuarios = self.__arvore_usuarios.percurso_em_ordem()
-        usuarios.sort(
-            key=lambda u: sum(i.watch_duration_seconds for i in u._Usuario__interacoes_realizadas),
-            reverse=True,
-        )
+        usuarios = _quick_sort(
+            usuarios,
+            key=lambda u: sum(i.watch_duration_seconds for i in u._Usuario__interacoes_realizadas)
+        )[::-1]
         for usuario in usuarios[:top_n]:
             print(
                 f"Usuário {usuario.id_usuario}: "
@@ -109,6 +128,6 @@ class SistemaAnaliseEngajamento:
             raise ValueError("Métrica inválida")
 
         conteudos = self.__arvore_conteudos.percurso_em_ordem()
-        conteudos.sort(key=chave_funcoes[metrica], reverse=True)
+        conteudos = _quick_sort(conteudos, key=chave_funcoes[metrica])[::-1]
         for conteudo in conteudos[:n]:
             print(f"{conteudo} -> {metrica}: {chave_funcoes[metrica](conteudo)}")
