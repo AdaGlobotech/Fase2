@@ -1,42 +1,52 @@
-from datetime import datetime # importa o módulo datetime
+from datetime import datetime
+
+from entidades import Conteudo
+from entidades.Plataforma import Plataforma 
 
 class Interacao:
     TIPOS_INTERACAO_VALIDOS = {'view_start', 'like', 'share', 'comment'} # cria um conjunto de strings contendo os valores permitidos para o atributo tipo_interacao
 
-    def __init__(self, conteudo_associado, id_usuario, timestamp_interacao, 
-                 plataforma_interacao, tipo_interacao, 
-                 watch_duration_seconds=0, comment_text="", interacao_id=None):
-        self.__interacao_id = interacao_id # é iniciado com None como valor padrão
-        self.__conteudo_associado = conteudo_associado
-        self.__id_usuario = int(id_usuario)
-        self.__timestamp_interacao = self._converter_timestamp(timestamp_interacao)
-        self.__plataforma_interacao = plataforma_interacao
-        self.tipo_interacao = tipo_interacao  # validador via property
-        self.watch_duration_seconds = watch_duration_seconds  # idem
-        self.comment_text = comment_text or ""
+    def __init__(self, conteudo_associado: 'Conteudo', plataforma_interacao: 'Plataforma', id_usuario: int, timestamp_interacao: datetime, tipo_interacao: str, watch_duration_seconds: int, comment_text: str):
+        
+        self.conteudo_associado = conteudo_associado
+        self._plataforma_interacao = plataforma_interacao
+        self._id_usuario = id_usuario
+        self._timestamp_interacao = timestamp_interacao
+        
+        if tipo_interacao not in self.TIPOS_INTERACAO_VALIDOS:
+            raise ValueError(f"Tipo de interação inválido: {tipo_interacao}")
+        self._tipo_interacao = tipo_interacao
+        
+        self._watch_duration_seconds = max(0, watch_duration_seconds)
+        self.comment_text = comment_text.strip() if comment_text else ""
 
     def _converter_timestamp(self, ts): # método protegido, para ser usado apenas dentro dessa classe Interacao
         if isinstance(ts, datetime):
             return ts # se o valor já for do formato datetime, só retorna
         return datetime.fromisoformat(ts) # se não for, faz a conversão para um objeto de formato datetime
 
+    @property
+    def plataforma_interacao(self) -> 'Plataforma':
+        return self._plataforma_interacao
+
     @property # getter do atributo privado tipo_interacao
-    def tipo_interacao(self):
-        return self.__tipo_interacao
+    def tipo_interacao(self) -> str:
+        return self._tipo_interacao
 
     @tipo_interacao.setter
     def tipo_interacao(self, valor):
         if valor not in self.TIPOS_INTERACAO_VALIDOS: # checagem se o tipo_interacao pertence ao conjunto definido de valores válidos
             raise ValueError(f"Tipo de interação inválido: {valor}") # levanta o erro de valor se não pertencer
-        self.__tipo_interacao = valor # se pertencer, insere no atributo
+        self._tipo_interacao = valor # se pertencer, insere no atributo
 
-    @property # getter do atributo privado watch_duration_seconds
-    def watch_duration_seconds(self):
-        return self.__watch_duration_seconds
+     # getter do atributo privado watch_duration_seconds
+    @property
+    def watch_duration_seconds(self) -> int:
+        return self._watch_duration_seconds
 
     @watch_duration_seconds.setter
     def watch_duration_seconds(self, valor):
-        self.__watch_duration_seconds = max(0, int(valor))
+        self._watch_duration_seconds = max(0, int(valor))
             # define o atributo com o valor inserido se ele for positivo, ou 0 caso contrário
 
     @property # getter do atributo privado comment_text
@@ -52,5 +62,5 @@ class Interacao:
     def __str__(self): # método pra exibição simples dos atributos da classe
         return f"Interacao({self.__tipo_interacao} por usuário: {self.__id_usuario})"
 
-    def __repr__(self): # método pra exibição mais técnica dos atributos da classe
-        return f"<Interacao tipo = {self.__tipo_interacao} usuario = {self.__id_usuario}>"
+    def __repr__(self) -> str:
+        return f"Interacao(tipo='{self.tipo_interacao}', usuario='{self._id_usuario}')"

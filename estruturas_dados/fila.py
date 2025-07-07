@@ -1,30 +1,23 @@
-"""
-enfileirar: O(1)
-
-desenfileirar: O(n) (devido ao pop(0))
-
-esta_vazia: O(1)
-
-    """
-
+import collections
 
 class Fila:
+    
     def __init__(self):
-        self.__dados = []
+        self._dados = collections.deque()
 
     def enfileirar(self, item):
-        self.__dados.append(item)  # O(1)
+        # Complexidade de Tempo: O(1), pois append em deque é constante.
+        self._dados.append(item)
 
     def desenfileirar(self):
-        if not self.esta_vazia():
-            return self.__dados.pop(0)  # O(n), mas aceitável para listas pequenas
-        return None
+        # Complexidade de Tempo: O(1), pois popleft em deque é constante.
+        if self.esta_vazia():
+            raise IndexError("Não é possível desenfileirar de uma fila vazia.")
+        return self._dados.popleft()
 
-    def esta_vazia(self):
-        return len(self.__dados) == 0
+    def esta_vazia(self) -> bool:
+        # Complexidade de Tempo: O(1).
+        return len(self._dados) == 0
 
-    def __len__(self):
-        return len(self.__dados)
-
-    def __str__(self):
-        return f"Fila({self.__dados})"
+    def __len__(self) -> int:
+        return len(self._dados)

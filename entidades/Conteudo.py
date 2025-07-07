@@ -3,18 +3,19 @@ from entidades import Interacao
 
 
 class Conteudo:
-    def __init__(self, id_conteudo, nome_conteudo):
-        self.id_conteudo = id_conteudo # acessa o setter que faz a validação e coloca valor no atributo
-        self.nome_conteudo = nome_conteudo # acessa o setter que faz a validação e coloca valor no atributo
-        self.__interacoes = [] # inicializa o atributo privado interacoes com uma lista vazia
+   
+    def __init__(self, id_conteudo: int, nome_conteudo: str):
+        self._id_conteudo = id_conteudo
+        self._nome_conteudo = nome_conteudo
+        self._interacoes: list['Interacao'] = []
 
-    @property # getter do atributo privado id_conteudo
-    def id_conteudo(self):
-        return self.__id_conteudo
+    @property
+    def id_conteudo(self) -> int:
+        return self._id_conteudo
     
-    @property # getter do atributo privado nome_conteudo
-    def nome_conteudo(self):
-        return self.__nome_conteudo
+    @property
+    def nome_conteudo(self) -> str:
+        return self._nome_conteudo
     
     @id_conteudo.setter
     def id_conteudo(self, id):
@@ -28,24 +29,21 @@ class Conteudo:
             raise TypeError("O nome_conteudo deve ser uma string.") # levanta TypeError se não for do tipo desejado
         self.__nome_conteudo = nome # se não der erro é porque o valor inserido é str, então pode ser inserido no atributo
     
-    def adicionar_interacao(self, interacao): # recebe uma interação e adiciona à lista contida no atributo privado interacoes
-        self.__interacoes.append(interacao) # se for um objeto Interacao, é adicionado à lista
+    def adicionar_interacao(self, interacao: 'Interacao'):
+        """
+        Adiciona uma interação à lista de interações deste conteúdo.
+        """
+        self._interacoes.append(interacao)
 
     def ver_interacoes(self): # visualizador das interações
         return self.__interacoes
 
-    def calcular_total_interacoes_engajamento(self):
-        lista_tipos_interacao = []
+    def calcular_total_interacoes_engajamento(self) -> int:
+        """
+        Calcula o total de 'like', 'share', 'comment'.
+        """
+        return sum(1 for i in self._interacoes if i.tipo_interacao in ['like', 'share', 'comment'])
 
-        for objeto in self.__interacoes: # percorre os objetos Interacao inclusos no atributo interacoes
-            lista_tipos_interacao.append(objeto.tipo_interacao) # puxa apenas o tipo_interacao, que é o atributo que contém as palavras "like", "share" e "comment"
-
-        # cria contadores pra quantas vezes cada uma das 3 interações de interesse aparece na lista de tipos de interação
-        conta_like = lista_tipos_interacao.count('like')
-        conta_share = lista_tipos_interacao.count('share')
-        conta_comment = lista_tipos_interacao.count('comment')
-
-        return conta_like, conta_share, conta_comment # retorna os 3 contadores em uma tupla
     
     def calcular_contagem_por_tipo_interacao(self):
         contadores = self.calcular_total_interacoes_engajamento() # puxa os valores devolvidos pela função que conta as interações
@@ -54,13 +52,11 @@ class Conteudo:
 
         return dicionario
     
-    def calcular_tempo_total_consumo(self):
-        total = 0
-
-        for objeto in self.__interacoes: # percorre os objetos que compõem a lista de interações
-            total += objeto.watch_duration_seconds # soma o valor do atributo watch_duration_seconds
-
-        return total
+    def calcular_tempo_total_consumo(self) -> int:
+        """
+        Soma watch_duration_seconds das interações.
+        """
+        return sum(i.watch_duration_seconds for i in self._interacoes)
     
     def calcular_media_tempo_consumo(self):
         lista_watch_duration_positivos = [] # lista para guardar só os valores watch_duration_seconds > 0, que serão usados no cálculo da média
@@ -73,20 +69,18 @@ class Conteudo:
 
         return media
     
-    def listar_comentarios(self):
-        lista_comentarios = []
-
-        for objeto in self.__interacoes: # percorre os objetos que compõem a lista de interações
-            if objeto.comment_text.strip(): # checa se a string não está vazia ou contém apenas espaços
-                lista_comentarios.append(objeto.comment_text) # adiciona aquele comentário em uma lista pra ser devolvida pelo método 
-
-        return lista_comentarios
+    def listar_comentarios(self) -> list[str]:
+        """
+        Retorna uma lista dos textos dos comentários.
+        """
+        return [i.comment_text for i in self._interacoes if i.tipo_interacao == 'comment' and i.comment_text]
     
-    def __str__(self): # método pra exibição simples dos atributos da classe
+    
+    def __str__(self): 
         return f'Conteúdo: {self.nome_conteudo} | ID: {self.id_conteudo}'
     
-    def __repr__(self): # método pra exibição mais técnica dos atributos da classe
-        return f'Conteúdo(nome_conteudo = {self.nome_conteudo}, id_conteudo = {self.id_conteudo})'
+    def __repr__(self):
+        return f"Conteudo(id={self.id_conteudo}, nome='{self.nome_conteudo}')"
 
 ### SUBCLASSE VIDEO
 class Video (Conteudo):
@@ -117,7 +111,7 @@ class Video (Conteudo):
 ### SUBCLASSE PODCAST
 class Podcast (Conteudo):
     def __init__(self, id_conteudo_podcast, nome_conteudo_podcast, duracao_total_episodio_seg = None):
-        super().__init__(id_conteudo_podcast, nome_conteudo_podcast) # traz o método construtor da superclasse Conteudo
+        super().__init__(id_conteudo_podcast, nome_conteudo_podcast) 
         self.duracao_total_episodio_seg = duracao_total_episodio_seg # o atributo é iniciado com o valor padrão None, sendo opcional inserir valor nele
 
     @property # getter do atributo privado duracao_total_episodio_seg
@@ -131,7 +125,7 @@ class Podcast (Conteudo):
 ### SUBCLASSE ARTIGO
 class Artigo (Conteudo):
     def __init__(self, id_conteudo_artigo, nome_conteudo_artigo, tempo_leitura_estimado_seg):
-        super().__init__(id_conteudo_artigo, nome_conteudo_artigo) # traz o método construtor da superclasse Conteudo
+        super().__init__(id_conteudo_artigo, nome_conteudo_artigo) 
         self.__tempo_leitura_estimado_seg = tempo_leitura_estimado_seg
 
     @property # getter do atributo privado tempo_leitura_estimado_seg
