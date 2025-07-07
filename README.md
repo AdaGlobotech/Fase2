@@ -11,38 +11,40 @@ Este projeto foi desenvolvido como parte da Fase 3 do bootcamp Ada+Globotech, co
 -  Iane Gomes
 -  Ren Wrobleski
 
-## 🎯 Objetivo
-
-- Fila para carga de dados;
-- Árvore binária de busca para armazenamento eficiente;
-- Algoritmos de ordenação (QuickSort foi o escolhido);
-- Refatoração do codigo da etapa anterior
-- Relatórios baseados nessas estruturas.
+## 🎯 Objetivos da Fase 3
+- Utilizar uma **fila** para carregamento inicial das interações.
+- Armazenar conteúdos e usuários em **árvores binárias de busca**.
+- Aplicar **QuickSort** na geração dos rankings e relatórios.
+- Refatorar a etapa anterior para utilizar essas estruturas de forma eficiente.
 
 ## 🧱 Estrutura do Projeto
 
 ```bash
 fase3/
-├── main.py                      
-├── interacoes_globo.csv         # CSV com dados de teste com mais entradas e usuarios repetidos
-├── interacoes_globo_antigo.csv  # CSV com dados sem adições
-├── teste_fila_arvore.py
+
+## 🧱 Estrutura do Repositório
+```text
+Fase3/
+├── main.py
+├── interacoes_globo.csv         # Dataset com novas interações (inclui usuários repetidos)
+├── interacoes_globo_antigo.csv  # Versão original do dataset
+├── teste_fila_arvore.py         # Demonstrações de Fila, Árvore e QuickSort
 ├── entidades/                   # Classes de domínio
-│   ├── conteudo.py              
-│   ├── interacao.py             
-│   ├── plataforma.py            
-│   └── usuario.py  
-├── estruturas_dados/
+│   ├── Conteudo.py
+│   ├── Interacao.py
+│   ├── Plataforma.py
+│   └── Usuario.py
+├── estruturas_dados/            # Implementações de Fila e Árvore
 │   ├── fila.py
-│   ├── arvore_binaria_busca.py
+│   └── arvore_binaria_busca.py
 ├── algoritmos/
-│   ├── ordenadores.py  
-├── testes_unitarios_etapa2/
-    ├── teste_conteudo_integracao_usuario.py 
-    ├── teste_plataforma_conteudo_integracao.py  
-    ├── teste_usuario_integracao.py             
+│   └── ordenacao.py             # Implementação do QuickSort
+├── testes_unitarios_etapa2/     # Scripts de testes manuais
+│   ├── teste_conteudo_integracao_usuario.py
+│   ├── teste_plataforma_conteudo_interacao.py
+│   └── teste_usuario_integracao.py
 └── analise/
-    └── sistema.py               # Classe SistemaAnaliseEngajamento
+    └── sistema.py               # SistemaAnaliseEngajamento
 ```
 
 ## 🚀 Como Executar
@@ -60,6 +62,14 @@ fase3/
    python main.py
    ```
 
+O sistema irá:
+
+Carregar o dataset em uma fila.
+Processar as interações, preenchendo as árvores de conteúdos e usuários.
+Gerar relatórios no terminal com os resultados mais relevantes (top conteúdos, usuários, plataformas e outras métricas).
+
+
+
 ## 🧪 Testes
 
 O projeto inclui **testes manuais** para validar:
@@ -72,6 +82,8 @@ O projeto inclui **testes manuais** para validar:
 - Comentários por conteúdo (`Interacao`);
 - Validação de tipos permitidos (`Interacao.TIPOS_INTERACAO_VALIDOS`);
 - Ordenação por métricas no sistema de análise.
+
+O arquivo teste_fila_arvore.py demonstra o funcionamento das estruturas de dados e do QuickSort.
 
 ## 📚 Aprendizados
 
